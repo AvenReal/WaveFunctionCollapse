@@ -10,9 +10,9 @@
  */
 typedef unsigned long long class_t;
 
-
-
 class_t class_number(unsigned short i);
+
+int get_class_id(class_t class);
 
 // ###################################################################################
 //                                    RULES
@@ -28,7 +28,7 @@ typedef class_t rule_t[8];
  */
 typedef rule_t rule_set_t[64];
 
-void update_rule_set(rule_set_t rule_set, class_t, rule_t rule);
+void add_rule_to_rule_set(rule_set_t rule_set, class_t class, rule_t rule);
 
 // ###################################################################################
 //                                    CELLS
@@ -60,5 +60,7 @@ typedef struct cell {
 typedef cell_t **field_t;
 
 field_t init_field(int width, int height);
+
+void free_field(field_t field);
 
 #endif //WAVEFUNCTIONCOLLAPSE_CLASS_H
