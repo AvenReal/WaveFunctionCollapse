@@ -10,7 +10,7 @@
  */
 typedef unsigned long long class_t;
 
-class_t class_number(unsigned short i);
+class_t class_number(unsigned short id);
 
 int get_class_id(class_t class);
 
@@ -28,7 +28,7 @@ typedef class_t rule_t[8];
  */
 typedef rule_t rule_set_t[64];
 
-void add_rule_to_rule_set(rule_set_t rule_set, class_t class, rule_t rule);
+void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule);
 
 // ###################################################################################
 //                                    CELLS
@@ -57,10 +57,20 @@ typedef struct cell {
 //                                    FIELD
 // ###################################################################################
 
-typedef cell_t **field_t;
+/**
+ * Double array of *cell_t that represent the grid where the wave function collapse occurs.
+ */
+typedef cell_t*** field_t;
 
-field_t init_field(int width, int height);
+field_t init_field(int width, int height, int nb_of_classes);
 
 void free_field(field_t field);
+
+// ###################################################################################
+//                                    WFC Algorithm
+// ###################################################################################
+
+cell_t** get_min_entropy_cells(field_t field, int height, int width, int* min_entropy);
+
 
 #endif //WAVEFUNCTIONCOLLAPSE_CLASS_H

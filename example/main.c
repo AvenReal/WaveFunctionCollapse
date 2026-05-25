@@ -19,7 +19,17 @@ int main() {
     const rule_t LAND_RULE = { LAND       , LAND       , LAND       , LAND       , LAND | SAND, LAND | SAND, LAND | SAND, LAND | SAND};
     add_rule_to_rule_set(rule_set, LAND, LAND_RULE);
 
+    field_t field = init_field(20,20, 3);
 
+    for (int i = 0; i < 20; ++i) {
+        for (int j = 0; j < 20; ++j) {
+            printf("%llu ", field[i][j]->entropy);
+        }
+        printf("\n");
+    }
+
+
+    free_field(field);
 
     return 0;
 }
