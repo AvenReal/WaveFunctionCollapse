@@ -34,17 +34,20 @@ void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule)
 //                                    CELLS
 // ###################################################################################
 
+typedef enum direction : short {
+    NorthWest = 0,
+    North = 1,
+    NorthEast = 2,
+    East = 3,
+    West = 4,
+    SouthWest = 5,
+    South = 6,
+    SouthEast = 7
+} direction_t;
+
 typedef struct cell {
 
-    struct cell* northWest;
-    struct cell* north;
-    struct cell* northEast;
-    struct cell* west;
-    struct cell* east;
-    struct cell* southWest;
-    struct cell* south;
-    struct cell* southEast;
-
+    struct cell* neighbours[8];
 
     class_t classes;
     /**
@@ -60,17 +63,24 @@ typedef struct cell {
 /**
  * Double array of *cell_t that represent the grid where the wave function collapse occurs.
  */
-typedef cell_t*** field_t;
+typedef cell_t*** grid_t;
 
-field_t init_field(int width, int height, int nb_of_classes);
+typedef struct field {
+    grid_t grid;
+    int width;
+    int height;
+    int tt_nb_of_classes;
+} field_t;
 
-void free_field(field_t field);
+field_t* init_field(int width, int height, int tt_nb_of_classes);
+
+void free_field(field_t* field);
 
 // ###################################################################################
 //                                    WFC Algorithm
 // ###################################################################################
 
-cell_t** get_min_entropy_cells(field_t field, int height, int width, int* min_entropy);
+void collapse(field_t* field);
 
 
 #endif //WAVEFUNCTIONCOLLAPSE_CLASS_H

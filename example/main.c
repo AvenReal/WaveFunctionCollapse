@@ -10,20 +10,20 @@ int main() {
 
     rule_set_t rule_set;
 
-    const rule_t SAND_RULE = { LAND | SAND, LAND | SAND, LAND | SAND, LAND | SAND, SAND | SEA , SAND | SEA , SAND | SEA , SAND | SEA};
+    const rule_t SAND_RULE = {LAND | SAND, LAND | SAND, LAND | SAND, LAND | SAND, SAND | SEA, SAND | SEA, SAND | SEA, SAND | SEA};
     add_rule_to_rule_set(rule_set, SAND, SAND_RULE);
 
-    const rule_t SEA_RULE =  { SEA | SAND , SEA | SAND , SEA | SAND , SEA | SAND , SEA        , SEA        , SEA        , SEA};
+    const rule_t SEA_RULE = {SEA | SAND, SEA | SAND, SEA | SAND, SEA | SAND, SEA, SEA, SEA, SEA};
     add_rule_to_rule_set(rule_set, SEA, SEA_RULE);
 
-    const rule_t LAND_RULE = { LAND       , LAND       , LAND       , LAND       , LAND | SAND, LAND | SAND, LAND | SAND, LAND | SAND};
+    const rule_t LAND_RULE = {LAND, LAND, LAND, LAND, LAND | SAND, LAND | SAND, LAND | SAND, LAND | SAND};
     add_rule_to_rule_set(rule_set, LAND, LAND_RULE);
 
-    field_t field = init_field(20,20, 3);
+    field_t* field = init_field(20,20, 3);
 
     for (int i = 0; i < 20; ++i) {
         for (int j = 0; j < 20; ++j) {
-            printf("%llu ", field[i][j]->entropy);
+            printf("%llu ", field->grid[i][j]->entropy);
         }
         printf("\n");
     }
