@@ -34,7 +34,7 @@ void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule)
 //                                    CELLS
 // ###################################################################################
 
-const short NB_DIRECTIONS = 8;
+
 
 typedef enum direction : short {
     NorthWest = 0,
