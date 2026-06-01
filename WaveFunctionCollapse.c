@@ -10,7 +10,7 @@
 class_t class_number(const unsigned short id) {
 
     if (id > 64)
-        errx(EXIT_FAILURE, "maximum 64 class, i should be between 0 and 63 and not %d", id );
+        errx(EXIT_FAILURE, "WaveFunctionCollapse.c -> class_number() -> maximum 64 class, id should be between 0 and 63 and not %d", id );
 
     return ((unsigned long long)1) << id;
 }
@@ -66,7 +66,7 @@ cell_t* get_cell(grid_t grid, int y, int x, int height, int width) {
     return grid[y][x];
 }
 
-field_t* init_field(const int width, const int height, const int tt_nb_of_classes) {
+field_t* init_field(rule_set_t* rule_set, const int width, const int height, const short tt_nb_of_classes) {
     field_t* field = malloc(sizeof(field_t));
 
     field->height = height;
@@ -103,7 +103,8 @@ field_t* init_field(const int width, const int height, const int tt_nb_of_classe
             cell->classes = (((class_t)1) << tt_nb_of_classes) - 1;
         }
     }
-
+    
+    field->rule_set = rule_set;
     return field;
 }
 
@@ -153,24 +154,78 @@ cell_t* get_random_min_entropy_cell(field_t* field) {
     return random_cell;
 }
 
-class_t get_random_class(int tt_nb_of_classes) {
-    return ((class_t)(1)) << (rand() % tt_nb_of_classes);
+class_t get_random_class(class_t classes, short tt_nb_of_classes) {
+    class_t max_class = ((class_t)1) << tt_nb_of_classes;
+
+    int nb_of_class = 0;
+    for (class_t i = 1; i <= max_class; i <<= 1) {
+        if (classes & i) {
+            nb_of_class ++;
+        }
+    }
+    class_t* possible_classes = malloc(sizeof(class_t) * nb_of_class);
+
+    int index = 0;
+    for (class_t i = 1; i <= max_class; i <<= 1) {
+        if (classes & i) {
+            possible_classes[index] = i;
+            index++;
+        }
+    }
+
+    class_t result = possible_classes[rand() % nb_of_class];
+    free(possible_classes);
+
+    return result;
 }
 
-class_t get_possible_neighbours(class_t classes, direction_t direction, rule_set_t rule_set, int tt_nb_of_classes) {
+class_t get_possible_neighbours(class_t classes, direction_t direction, rule_set_t* rule_set, short tt_nb_of_classes) {
     class_t max_class = ((class_t) 1 ) << tt_nb_of_classes;
     class_t result = 0;
 
-    for (class_t i = 1; i < max_class; i <<= 1) {
+    for (class_t i = 1; i <= max_class; i <<= 1) {
         if (i & classes) {
-            result |= rule_set[get_class_id(i)][direction];
+            result |= (*rule_set)[get_class_id(i)][direction];
         }
     }
 
     return result;
 }
 
+short get_entropy(class_t class)
+{
+    short entropy = 0;
+    while(class > 0)
+    {
+        entropy += (class & 1);
+        class >>= 1;
+    }
+    
+    return entropy;
+}
+
+void collapse_cell(cell_t* cell, class_t possible_neighbours, rule_set_t* rule_set, short tt_nb_of_classes) {
+    if(cell == NULL || cell->entropy == 1 || (cell->classes & possible_neighbours) == cell->classes)
+        return;
+
+    if ((cell->classes & possible_neighbours) == 0)
+        errx(EXIT_FAILURE, "WaveFunctionCollapse.c -> collapse_cell() -> cell has no possible class to collapse");
+
+    cell->classes = cell->classes & possible_neighbours;
+    cell->entropy = get_entropy(cell->classes);
+}
+
 void collapse(field_t* field) {
 
+    cell_t* cell_to_collapse = get_random_min_entropy_cell(field);
+    class_t random_class = get_random_class(cell_to_collapse->classes, field->tt_nb_of_classes);
+
+    cell_to_collapse->classes = random_class;
+    cell_to_collapse->entropy = 1;
+
+    for (direction_t d = 0; d < NB_DIRECTIONS; d++) {
+        class_t possible_neighbours = get_possible_neighbours(random_class, d, field->rule_set, field->tt_nb_of_classes);
+
+    }
 }
 

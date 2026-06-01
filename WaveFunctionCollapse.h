@@ -34,6 +34,8 @@ void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule)
 //                                    CELLS
 // ###################################################################################
 
+const short NB_DIRECTIONS = 8;
+
 typedef enum direction : short {
     NorthWest = 0,
     North = 1,
@@ -53,7 +55,7 @@ typedef struct cell {
     /**
      * The number of classes currently in quantum state in this cell.
      */
-    int entropy;
+    short entropy;
 } cell_t;
 
 // ###################################################################################
@@ -67,12 +69,16 @@ typedef cell_t*** grid_t;
 
 typedef struct field {
     grid_t grid;
+
     int width;
     int height;
-    int tt_nb_of_classes;
+
+    short tt_nb_of_classes;
+
+    rule_set_t* rule_set;
 } field_t;
 
-field_t* init_field(int width, int height, int tt_nb_of_classes);
+field_t* init_field(rule_set_t* rule_set, int width, int height, short tt_nb_of_classes);
 
 void free_field(field_t* field);
 

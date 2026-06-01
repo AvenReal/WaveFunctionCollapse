@@ -7,7 +7,7 @@ You can have up to 64 different classes (tiles)
 # Vocabulary
 **Class** : A tile of the wave function collapse (ex: land, beach or sea).
 
-**Quantum State** : In a wave function collapse algorithm, during the generation process, a tile can have multiple possible class, this is what I call quantum state.  
+**Entropy** : The number of possible classes a cell can hold.   
 
 **Rule** : The set of possible classes that can be placed around a given class.
 
