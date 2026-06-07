@@ -160,9 +160,12 @@ cell_t* get_random_min_entropy_cell(field_t* field) {
             }
         }
     }
+    printf("min entropy: %d\n", min_entropy);
     cell_t** candidate_cells = malloc(sizeof(cell_t*) * nb_cell_min_entropy);
+
     if (candidate_cells == NULL)
         errx(EXIT_FAILURE, "WaveFunctionCollapse.c -> get_random_min_entropy_cell() -> candidate_cells malloc failed!");
+
     int index = 0;
     for (int i = 0; i < field->height; ++i) {
         for (int j = 0; j < field->width; ++j) {
@@ -174,6 +177,7 @@ cell_t* get_random_min_entropy_cell(field_t* field) {
     }
     cell_t* random_cell = candidate_cells[rand() % nb_cell_min_entropy];
     free(candidate_cells);
+    printf("selected entropy: %d\n", random_cell->entropy);
     return random_cell;
 }
 
@@ -249,7 +253,7 @@ class_t* separate_classes(class_t class, int tt_nb_of_classes, int* size) {
 
 
 
-void collapse_cell(cell_t* cell, rule_set_t* rule_set, short tt_nb_of_classes, direction_t origin) {
+void collapse_cell(cell_t* cell, rule_set_t* rule_set, short tt_nb_of_classes) {
     const class_t max_class = class_number(tt_nb_of_classes);
 
     if (cell == NULL)
@@ -259,15 +263,17 @@ void collapse_cell(cell_t* cell, rule_set_t* rule_set, short tt_nb_of_classes, d
     for (direction_t d = 0; d < NB_OF_DIRECTIONS; ++d) {
         if (cell->neighbours[d] != NULL && cell->neighbours[d]->entropy != 1) {
             class_t neighbour_classes = cell->neighbours[d]->classes;
-            cell->neighbours[d]->classes = 0;
+            class_t possibilities = 0;
             for (class_t class = 1; class <= max_class; class <<= 1) {
                 if (class & classes) {
-                    cell->neighbours[d]->classes |= (*rule_set)[get_class_id(class)][d];
+                    possibilities |= (*rule_set)[get_class_id(class)][d];
                 }
             }
-            if (neighbour_classes != cell->neighbours[d]->classes && d != origin) {
+            cell->neighbours[d]->classes &= possibilities;
+
+            if (neighbour_classes != cell->neighbours[d]->classes) {
                 cell->neighbours[d]->entropy = get_entropy(cell->neighbours[d]->classes);
-                collapse_cell(cell->neighbours[d], rule_set, tt_nb_of_classes, d);
+                collapse_cell(cell->neighbours[d], rule_set, tt_nb_of_classes);
             }
         }
     }
@@ -294,7 +300,7 @@ void collapse_random_cell(field_t* field) {
     cell_to_collapse->classes = random_class;
     cell_to_collapse->entropy = 1;
 
-    collapse_cell(cell_to_collapse, field->rule_set, field->tt_nb_of_classes, -1);
+    collapse_cell(cell_to_collapse, field->rule_set, field->tt_nb_of_classes);
 }
 
 void collapse(field_t* field)
