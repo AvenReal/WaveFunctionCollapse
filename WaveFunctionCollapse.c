@@ -124,7 +124,7 @@ void print_field(field_t* field, char* displayer[field->width]) {
             if (field->grid[i][j]->entropy == 1)
                 printf( "%s", displayer[get_class_id(field->grid[i][j]->classes)]);
             else
-                printf( "%d", field->grid[i][j]->classes);
+                printf( "%d", field->grid[i][j]->entropy);
         }
         printf( "│\n");
     }
@@ -135,9 +135,16 @@ void print_field(field_t* field, char* displayer[field->width]) {
     printf( "╯\n");
 }
 
-void free_field(field_t* field) { // TODO
+void free_field(field_t* field) {
+    for (int i = 0; i < field->height; ++i) {
+        for (int j = 0; j < field->width; ++j) {
+            free(field->grid[i][j]);
+        }
+        free(field->grid[i]);
+    }
+    free(field->grid);
 
-
+    free(field);
 }
 
 // ###################################################################################
@@ -202,22 +209,6 @@ class_t get_random_class(class_t classes, short tt_nb_of_classes) {
     return result;
 }
 
-class_t get_possible_neighbours(class_t classes, direction_t direction, rule_set_t* rule_set, short tt_nb_of_classes) {
-    class_t max_class = ((class_t) 1 ) << tt_nb_of_classes;
-    class_t result = 0;
-
-    printf("-----\n");
-    for (class_t i = 1; i <= max_class; i <<= 1) {
-        if (i & classes) {
-            result |= (*rule_set)[get_class_id(i)][direction];
-            printf("%llu\n", result);
-        }
-    }
-    printf("-----\n");
-
-    return result;
-}
-
 short get_entropy(class_t class)
 {
     short entropy = 0;
@@ -229,29 +220,6 @@ short get_entropy(class_t class)
 
     return entropy;
 }
-
-class_t* separate_classes(class_t class, int tt_nb_of_classes, int* size) {
-    int l = 0;
-    while (class > 0) {
-        l++;
-        class >>= 1;
-    }
-
-    class_t* classes = malloc(sizeof(class_t) * l);
-    class_t max_class = class_number(tt_nb_of_classes);
-
-    int index = 0;
-    for (class_t i = 1; i <= max_class; i <<= 1) {
-        if (i & class) {
-            classes[index] = i;
-            index++;
-        }
-    }
-    *size = l;
-    return classes;
-}
-
-
 
 void collapse_cell(cell_t* cell, rule_set_t* rule_set, short tt_nb_of_classes) {
     const class_t max_class = class_number(tt_nb_of_classes);

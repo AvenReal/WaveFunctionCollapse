@@ -1,16 +1,58 @@
 # WaveFunctionCollapse
 A simple Wave Function Collapse Project
 
-# How to use ?
-You can have up to 64 different classes (tiles)
-
 # Vocabulary
 **Class** : A tile of the wave function collapse (ex: land, beach or sea).
 
-**Entropy** : The number of possible classes a cell can hold.   
+**Entropy** : The number of possible classes a cell can hold.
 
 **Rule** : The set of possible classes that can be placed around a given class.
 
 **Rule Set** : The set of all rules (so for each class).
 
 **Field** : the grid where the wave function collapse occurs.
+
+# How to use ?
+
+## Step 1: Declare your classes
+Declare all your classes using the `class_t class_number(unsigned short id)` function. the `id` should be unique for each class.
+
+*Information: You can have up to 64 different classes.*
+
+Example:
+```c
+const class_t SAND = class_number(0);
+const class_t SEA = class_number(1);
+const class_t LAND = class_number(2);
+```
+
+## Step 2: Declare your rules and ruleset 
+
+Simply declare a `rule_set_t` variable for the rule set, after that you can declare the rules for each class by declaring a `rule_t` variable
+
+# Examples
+## Example 1
+```
+╭────────────────────────────────────────────────────────────────────────────────╮
+│░███████████████████████████████████████████████████████████████████████████████│
+│░░░█████████████████████████████████████████████████████████████████████████████│
+│░░░░████████████████████████████████████████████████████████████████████████████│
+│░░░░░███████████████████████████████████████████████████████████████████████████│
+│░░░░░░██████████████████████████████████████████████████████████████████████████│
+│░░░░░░░░░░░█████████████████████████████████████████████████████████████████████│
+│░░░░░░░░░░░░████████████████████████████████████████████████████████████████████│
+│░░░░░░░░░░░░░░██████████████████████████████████████████████████████████████████│
+│░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██████████████████████████████████████████│
+│░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█████████████████████████████████████████│
+│░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░████████████████████████████████████████│
+│ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██████████████████████████████████████│
+│  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░███████████████│
+│   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░████████████│
+│    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░███████████│
+│          ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░██████████│
+│                         ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█████████│
+│                                        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░│
+│                                                        ░░░░░░░░░░░░░░░░░░░░░░░░│
+│                                                            ░░░░░░░░░░░░░░░░░░░░│
+╰────────────────────────────────────────────────────────────────────────────────╯
+```

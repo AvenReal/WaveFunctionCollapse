@@ -1,8 +1,7 @@
 
 example1 :
-	gcc main.c ../WaveFunctionCollapse.c
+	gcc example1.c ../WaveFunctionCollapse.c
 	./a.out
-	rm a.out
 
 clean :
 	rm a.out
