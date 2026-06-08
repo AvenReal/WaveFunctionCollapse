@@ -24,6 +24,9 @@ int get_class_id(class_t class) {
     return __builtin_ctzll(class);
 }
 
+class_t get_any_class(const unsigned short tt_nb_of_classes) {
+    return ((class_t)(1) << tt_nb_of_classes) - 1;
+}
 // ###################################################################################
 //                                    RULES
 // ###################################################################################
@@ -123,6 +126,8 @@ void print_field(field_t* field, char* displayer[field->width]) {
         for (int j = 0; j < field->width; ++j) {
             if (field->grid[i][j]->entropy == 1)
                 printf( "%s", displayer[get_class_id(field->grid[i][j]->classes)]);
+            else if (field->grid[i][j]->entropy == 0)
+                printf( "\033[1;31m🮙\033[1;31m");
             else
                 printf( "%d", field->grid[i][j]->entropy);
         }
@@ -167,7 +172,7 @@ cell_t* get_random_min_entropy_cell(field_t* field) {
             }
         }
     }
-    printf("min entropy: %d\n", min_entropy);
+
     cell_t** candidate_cells = malloc(sizeof(cell_t*) * nb_cell_min_entropy);
 
     if (candidate_cells == NULL)
@@ -184,7 +189,7 @@ cell_t* get_random_min_entropy_cell(field_t* field) {
     }
     cell_t* random_cell = candidate_cells[rand() % nb_cell_min_entropy];
     free(candidate_cells);
-    printf("selected entropy: %d\n", random_cell->entropy);
+
     return random_cell;
 }
 
@@ -222,16 +227,19 @@ short get_entropy(class_t class)
 }
 
 void collapse_cell(cell_t* cell, rule_set_t* rule_set, short tt_nb_of_classes) {
-    const class_t max_class = class_number(tt_nb_of_classes);
 
     if (cell == NULL)
         return;
 
+    const class_t max_class = class_number(tt_nb_of_classes);
+
     class_t classes = cell->classes;
     for (direction_t d = 0; d < NB_OF_DIRECTIONS; ++d) {
         if (cell->neighbours[d] != NULL && cell->neighbours[d]->entropy != 1) {
+
             class_t neighbour_classes = cell->neighbours[d]->classes;
             class_t possibilities = 0;
+
             for (class_t class = 1; class <= max_class; class <<= 1) {
                 if (class & classes) {
                     possibilities |= (*rule_set)[get_class_id(class)][d];
@@ -273,11 +281,14 @@ void collapse_random_cell(field_t* field) {
 
 void collapse(field_t* field)
 {
-    char* displayer[] = {"░", " ", "█"};
-    do
-    {
+    char* displayer[] = {"┃", "━", "┏", "┓", "┗", "┛", " "};
+    //do
+    //{
+    for (int i = 0; i < 8; ++i) {
         collapse_random_cell(field);
         print_field(field, displayer);
+    }
 
-    } while(!has_collapsed(field));
+
+    //} while(!has_collapsed(field));
 }

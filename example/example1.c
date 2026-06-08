@@ -5,8 +5,8 @@
 
 int main() {
 
-    const class_t SAND = class_number(0);
-    const class_t SEA = class_number(1);
+    const class_t SEA = class_number(0);
+    const class_t SAND = class_number(1);
     const class_t LAND = class_number(2);
 
     rule_set_t rule_set;
@@ -25,6 +25,9 @@ int main() {
 
     collapse(field);
 
+    char* displayer[] = {" ", "▒", "█"};
+
+    print_field(field, displayer);
 
     free_field(field);
 

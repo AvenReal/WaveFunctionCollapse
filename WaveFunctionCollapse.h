@@ -14,6 +14,8 @@ class_t class_number(unsigned short id);
 
 int get_class_id(class_t class);
 
+class_t get_any_class(unsigned short tt_nb_of_classes);
+
 // ###################################################################################
 //                                    RULES
 // ###################################################################################
@@ -79,6 +81,8 @@ typedef struct field {
 } field_t;
 
 field_t* init_field(rule_set_t* rule_set, int width, int height, short tt_nb_of_classes);
+
+void print_field(field_t* field, char* displayer[field->width]);
 
 void free_field(field_t* field);
 
