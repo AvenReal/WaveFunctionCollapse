@@ -37,13 +37,12 @@ void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule)
 // ###################################################################################
 
 
-
 typedef enum direction : short {
     NorthWest = 0,
     North = 1,
     NorthEast = 2,
-    East = 3,
-    West = 4,
+    West = 3,
+    East = 4,
     SouthWest = 5,
     South = 6,
     SouthEast = 7

@@ -4,6 +4,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+// char* direction_strings[] = {
+//     "NorthWest",
+//     "North",
+//     "NorthEast",
+//     "West",
+//     "East",
+//     "SouthWest",
+//     "South",
+//     "SouthEast"
+// };
+
 // ###################################################################################
 //                                    CLASS
 // ###################################################################################
@@ -27,6 +39,16 @@ int get_class_id(class_t class) {
 class_t get_any_class(const unsigned short tt_nb_of_classes) {
     return ((class_t)(1) << tt_nb_of_classes) - 1;
 }
+
+void print_classes(class_t classes, char* displayer[] ,short tt_nb_of_classes) {
+    class_t max_class = class_number(tt_nb_of_classes);
+    for (class_t class = 1; class <= max_class ; class <<= 1) {
+        if (class & classes) {
+            printf("%s ", displayer[get_class_id(class)]);
+        }
+    }
+}
+
 // ###################################################################################
 //                                    RULES
 // ###################################################################################
@@ -245,9 +267,16 @@ void collapse_cell(cell_t* cell, rule_set_t* rule_set, short tt_nb_of_classes) {
                     possibilities |= (*rule_set)[get_class_id(class)][d];
                 }
             }
+
             cell->neighbours[d]->classes &= possibilities;
 
             if (neighbour_classes != cell->neighbours[d]->classes) {
+                // printf(" %s\t| ", direction_strings[d]);
+                // print_classes(neighbour_classes, displayer, tt_nb_of_classes );
+                // printf("\t-> ");
+                // print_classes(cell->neighbours[d]->classes, displayer, tt_nb_of_classes );
+                // printf("\n");
+
                 cell->neighbours[d]->entropy = get_entropy(cell->neighbours[d]->classes);
                 collapse_cell(cell->neighbours[d], rule_set, tt_nb_of_classes);
             }
@@ -272,7 +301,7 @@ void collapse_random_cell(field_t* field) {
 
     cell_t* cell_to_collapse = get_random_min_entropy_cell(field);
     class_t random_class = get_random_class(cell_to_collapse->classes, field->tt_nb_of_classes);
-
+    printf("%s\n", displayer[get_class_id(random_class)]);
     cell_to_collapse->classes = random_class;
     cell_to_collapse->entropy = 1;
 
@@ -281,14 +310,11 @@ void collapse_random_cell(field_t* field) {
 
 void collapse(field_t* field)
 {
-    char* displayer[] = {"┃", "━", "┏", "┓", "┗", "┛", " "};
-    //do
-    //{
-    for (int i = 0; i < 8; ++i) {
+
+    do
+    {
         collapse_random_cell(field);
-        print_field(field, displayer);
-    }
+        // print_field(field, displayer);
 
-
-    //} while(!has_collapsed(field));
+    } while(!has_collapsed(field));
 }

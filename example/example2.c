@@ -43,7 +43,7 @@ int main() {
     const rule_t SE_CORNER_RULE = {ANY , DONT_HAVE_SOUTH_CONNECTOR, ANY, DONT_HAVE_EAST_CONNECTOR, HAVE_WEST_CONNECTOR,      ANY, HAVE_NORTH_CONNECTOR,      ANY};
     add_rule_to_rule_set(rule_set, SE_CORNER, SE_CORNER_RULE);
 
-    const rule_t SW_CORNER_RULE = {ANY , DONT_HAVE_SOUTH_CONNECTOR, ANY, DONT_HAVE_EAST_CONNECTOR, HAVE_WEST_CONNECTOR,      ANY, HAVE_NORTH_CONNECTOR,      ANY};
+    const rule_t SW_CORNER_RULE = {ANY , DONT_HAVE_SOUTH_CONNECTOR, ANY, HAVE_EAST_CONNECTOR, DONT_HAVE_WEST_CONNECTOR,      ANY, HAVE_NORTH_CONNECTOR,      ANY};
     add_rule_to_rule_set(rule_set, SW_CORNER, SW_CORNER_RULE);
 
     const rule_t NE_CORNER_RULE = {ANY , HAVE_SOUTH_CONNECTOR,      ANY, DONT_HAVE_EAST_CONNECTOR, HAVE_WEST_CONNECTOR,      ANY, DONT_HAVE_NORTH_CONNECTOR, ANY};
@@ -57,7 +57,7 @@ int main() {
 
     collapse(field);
 
-    char* displayer[] = {"┃", "━", "┏", "┓", "┗", "┛", " "};
+    char* displayer[] = {"┃", "━", "┏", "┓", "┗", "┛"};
 
     print_field(field, displayer);
 
