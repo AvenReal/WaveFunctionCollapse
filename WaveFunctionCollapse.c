@@ -301,7 +301,7 @@ void collapse_random_cell(field_t* field) {
 
     cell_t* cell_to_collapse = get_random_min_entropy_cell(field);
     class_t random_class = get_random_class(cell_to_collapse->classes, field->tt_nb_of_classes);
-    printf("%s\n", displayer[get_class_id(random_class)]);
+
     cell_to_collapse->classes = random_class;
     cell_to_collapse->entropy = 1;
 
