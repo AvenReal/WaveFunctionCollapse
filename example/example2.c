@@ -1,11 +1,3 @@
-//
-// Created by evan on 6/8/26.
-//
-
-#include "example2.h"
-
-#include <stdio.h>
-
 #include "../WaveFunctionCollapse.h"
 
 int main() {
@@ -52,7 +44,7 @@ int main() {
     const rule_t NW_CORNER_RULE = {ANY , HAVE_SOUTH_CONNECTOR,      ANY, HAVE_EAST_CONNECTOR,      DONT_HAVE_WEST_CONNECTOR, ANY, DONT_HAVE_NORTH_CONNECTOR, ANY};
     add_rule_to_rule_set(rule_set, NW_CORNER, NW_CORNER_RULE);
 
-    field_t* field = init_field(&rule_set, 80,20, NB_CLASSES);
+    field_t* field = init_field(&rule_set, 50,25, NB_CLASSES);
 
 
     collapse(field);

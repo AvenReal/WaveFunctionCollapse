@@ -28,10 +28,6 @@ class_t class_number(const unsigned short id) {
     return ((unsigned long long)1) << id;
 }
 
-int is_in_quantum_state(class_t class) {
-    return (class & (class-1)) != 0;
-}
-
 int get_class_id(class_t class) {
     return __builtin_ctzll(class);
 }
@@ -60,19 +56,6 @@ void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule)
         rule_set[class_id][i] = rule[i];
     }
 
-}
-
-class_t get_rules(class_t classes, rule_set_t rule_set, short direction) {
-
-    class_t result = 0;
-    for (int i = 0; classes > 0; i++) {
-        if (classes % 2)
-            result |= rule_set[get_class_id(((class_t) 1) << i)][direction];
-
-        classes >>= 1;
-    }
-
-    return result;
 }
 
 // ###################################################################################
@@ -149,7 +132,7 @@ void print_field(field_t* field, char* displayer[field->width]) {
             if (field->grid[i][j]->entropy == 1)
                 printf( "%s", displayer[get_class_id(field->grid[i][j]->classes)]);
             else if (field->grid[i][j]->entropy == 0)
-                printf( "\033[1;31m🮙\033[1;31m");
+                printf( "\033[1;31m🮙\033[1;0m");
             else
                 printf( "%d", field->grid[i][j]->entropy);
         }
@@ -250,7 +233,7 @@ short get_entropy(class_t class)
 
 void collapse_cell(cell_t* cell, rule_set_t* rule_set, short tt_nb_of_classes) {
 
-    if (cell == NULL)
+    if (cell == NULL || cell->classes == 0)
         return;
 
     const class_t max_class = class_number(tt_nb_of_classes);
@@ -285,7 +268,7 @@ void collapse_cell(cell_t* cell, rule_set_t* rule_set, short tt_nb_of_classes) {
 
 }
 
-short has_collapsed(field_t* field) {
+short is_collapsed(field_t* field) {
     for (int i = 0; i < field->height; ++i) {
         for (int j = 0; j < field->width; ++j) {
             if (field->grid[i][j]->entropy > 1) {
@@ -311,10 +294,11 @@ void collapse_random_cell(field_t* field) {
 void collapse(field_t* field)
 {
 
+    char* displayer[] = {" ", "┃", "┳", "┗", "┛", "𜱵"};
     do
     {
         collapse_random_cell(field);
         // print_field(field, displayer);
 
-    } while(!has_collapsed(field));
+    } while(!is_collapsed(field));
 }

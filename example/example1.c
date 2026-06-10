@@ -1,4 +1,3 @@
-#include "example1.h"
 #include "../WaveFunctionCollapse.h"
 #include <stdio.h>
 
