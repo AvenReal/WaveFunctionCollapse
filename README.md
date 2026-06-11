@@ -17,18 +17,27 @@ A simple Wave Function Collapse Project
 ## Step 1: Declare your classes
 Declare all your classes using the `class_t class_number(unsigned short id)` function. the `id` should be unique for each class.
 
-*Information: You can have up to 64 different classes.*
+Additionally, you can have a `class_t` that holds all of your classes at once. using the `class_t get_any_class(unsigned short tt_nb_of_classes)` function.
+
+*Warning: You can have up to 64 different classes.*
 
 Example:
 ```c
 const class_t SAND = class_number(0);
 const class_t SEA = class_number(1);
 const class_t LAND = class_number(2);
+
+const class_t ANY = get_any_class(3);
 ```
 
-## Step 2: Declare your rules and ruleset 
+## Step 2: Declare your rules and rule set 
 
-Simply declare a `rule_set_t` variable for the rule set, after that you can declare the rules for each class by declaring a `rule_t` variable
+Simply declare a `rule_set_t` variable for the rule set, 
+```c
+rule_set_t rule_set;
+```
+after that you can declare the rules for each class by declaring a `rule_t` variable. A `rule_t` variable is simply array of 8 `class_t`. Representing which class can lay next to a given class.
+
 
 # Examples
 ## Example 1
