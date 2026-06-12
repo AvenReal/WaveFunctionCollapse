@@ -57,7 +57,6 @@ void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule)
 //                                    CELLS
 // ###################################################################################
 
-
 /**
  * Helps convert the relative position in the grid to the index in the rule_set_t array.
  */
@@ -87,6 +86,7 @@ typedef struct cell {
      * The class_t the cell holds.
      */
     class_t classes;
+
     /**
      * The number of classes currently in quantum state in this cell.
      */
@@ -102,16 +102,28 @@ typedef struct cell {
  */
 typedef cell_t*** grid_t;
 
-
 /**
  * Where all the main data are located, including the grid_t, it's width and height, the rule_set_t and the number of classes.
  */
 typedef struct field {
+    /**
+     * Grid of @code cell_t\endcode size of @code height * width\endcode ;
+     */
     grid_t grid;
 
+    /**
+     * Width of @code grid\endcode.
+     */
     int width;
+    /**
+     * Height of @code grid\endcode.
+     */
     int height;
 
+
+    /**
+     * Number of classes the field_t will hold.
+     */
     short tt_nb_of_classes;
 
     rule_set_t* rule_set;
@@ -151,6 +163,5 @@ void free_field(field_t* field);
  * @param field The field to collapse.
  */
 void collapse(field_t* field);
-
 
 #endif //WAVEFUNCTIONCOLLAPSE_CLASS_H
