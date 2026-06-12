@@ -29,9 +29,9 @@ int main() {
     // ╰────────────────────────────────────────────────────────────────────────────────╯
 
 
-    const class_t SEA = class_number(0);
-    const class_t SAND = class_number(1);
-    const class_t LAND = class_number(2);
+    const class_t SEA = get_class(0);
+    const class_t SAND = get_class(1);
+    const class_t LAND = get_class(2);
 
     rule_set_t rule_set;
 

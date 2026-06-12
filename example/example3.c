@@ -27,12 +27,12 @@ int main() {
     // ╰────────────────────────────────────────────────────────────────────────────────╯
 
 
-    const class_t AIR = class_number(0);
-    const class_t TRUNK = class_number(1);
-    const class_t BRANCHES = class_number(2);
-    const class_t L_BRANCH = class_number(3);
-    const class_t R_BRANCH = class_number(4);
-    const class_t LEAF = class_number(5);
+    const class_t AIR = get_class(0);
+    const class_t TRUNK = get_class(1);
+    const class_t BRANCHES = get_class(2);
+    const class_t L_BRANCH = get_class(3);
+    const class_t R_BRANCH = get_class(4);
+    const class_t LEAF = get_class(5);
 
     const short tt_nb_of_classes = 6;
 

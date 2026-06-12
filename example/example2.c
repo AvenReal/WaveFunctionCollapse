@@ -27,12 +27,12 @@ int main() {
     // ╰────────────────────────────────────────────────────────────────────────────────╯
 
 
-    const class_t V_PIPE = class_number(0);
-    const class_t H_PIPE = class_number(1);
-    const class_t SE_CORNER = class_number(2);
-    const class_t SW_CORNER = class_number(3);
-    const class_t NE_CORNER = class_number(4);
-    const class_t NW_CORNER = class_number(5);
+    const class_t V_PIPE = get_class(0);
+    const class_t H_PIPE = get_class(1);
+    const class_t SE_CORNER = get_class(2);
+    const class_t SW_CORNER = get_class(3);
+    const class_t NE_CORNER = get_class(4);
+    const class_t NW_CORNER = get_class(5);
     const short NB_CLASSES = 6;
 
 

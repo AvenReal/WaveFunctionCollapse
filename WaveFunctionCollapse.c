@@ -1,6 +1,5 @@
 #include "WaveFunctionCollapse.h"
 #include <err.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -20,15 +19,15 @@
 //                                    CLASS
 // ###################################################################################
 
-class_t class_number(const unsigned short id) {
+class_t get_class(const unsigned short id) {
 
     if (id > 64)
-        errx(EXIT_FAILURE, "WaveFunctionCollapse.c -> class_number() -> maximum 64 class, id should be between 0 and 63 and not %d", id );
+        errx(EXIT_FAILURE, "WaveFunctionCollapse.c -> get_class() -> maximum 64 class, id should be between 0 and 63 and not %d", id );
 
     return ((unsigned long long)1) << id;
 }
 
-int get_class_id(class_t class) {
+int get_id_of_class(class_t class) {
     return __builtin_ctzll(class);
 }
 
@@ -37,10 +36,10 @@ class_t get_any_class(const unsigned short tt_nb_of_classes) {
 }
 
 void print_classes(class_t classes, char* displayer[] ,short tt_nb_of_classes) {
-    class_t max_class = class_number(tt_nb_of_classes);
+    class_t max_class = get_class(tt_nb_of_classes);
     for (class_t class = 1; class <= max_class ; class <<= 1) {
         if (class & classes) {
-            printf("%s ", displayer[get_class_id(class)]);
+            printf("%s ", displayer[get_id_of_class(class)]);
         }
     }
 }
@@ -51,7 +50,7 @@ void print_classes(class_t classes, char* displayer[] ,short tt_nb_of_classes) {
 
 void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule) {
 
-    int class_id = get_class_id(class);
+    int class_id = get_id_of_class(class);
     for (int i = 0; i < 8; ++i) {
         rule_set[class_id][i] = rule[i];
     }
@@ -101,16 +100,16 @@ field_t* init_field(rule_set_t* rule_set, const int width, const int height, con
         for (int j = 0; j < width; ++j) {
             cell_t* cell = field->grid[i][j];
 
-            cell->neighbours[NorthWest] = get_cell(field->grid, i - 1, j - 1, height, width);
-            cell->neighbours[North] = get_cell(field->grid, i - 1, j, height, width);
-            cell->neighbours[NorthEast] = get_cell(field->grid, i - 1, j + 1, height, width);
+            cell->neighbors[NorthWest] = get_cell(field->grid, i - 1, j - 1, height, width);
+            cell->neighbors[North] = get_cell(field->grid, i - 1, j, height, width);
+            cell->neighbors[NorthEast] = get_cell(field->grid, i - 1, j + 1, height, width);
 
-            cell->neighbours[West] = get_cell(field->grid, i, j - 1, height, width);
-            cell->neighbours[East] = get_cell(field->grid, i, j + 1, height, width);
+            cell->neighbors[West] = get_cell(field->grid, i, j - 1, height, width);
+            cell->neighbors[East] = get_cell(field->grid, i, j + 1, height, width);
 
-            cell->neighbours[SouthWest] = get_cell(field->grid, i + 1, j - 1, height, width);
-            cell->neighbours[South] = get_cell(field->grid, i + 1, j, height, width);
-            cell->neighbours[SouthEast] = get_cell(field->grid, i + 1, j + 1, height, width);
+            cell->neighbors[SouthWest] = get_cell(field->grid, i + 1, j - 1, height, width);
+            cell->neighbors[South] = get_cell(field->grid, i + 1, j, height, width);
+            cell->neighbors[SouthEast] = get_cell(field->grid, i + 1, j + 1, height, width);
 
             cell->entropy = tt_nb_of_classes;
             cell->classes = (((class_t)1) << tt_nb_of_classes) - 1;
@@ -130,7 +129,7 @@ void print_field(field_t* field, char* displayer[field->width]) {
         printf( "│");
         for (int j = 0; j < field->width; ++j) {
             if (field->grid[i][j]->entropy == 1)
-                printf( "%s", displayer[get_class_id(field->grid[i][j]->classes)]);
+                printf( "%s", displayer[get_id_of_class(field->grid[i][j]->classes)]);
             else if (field->grid[i][j]->entropy == 0)
                 printf( "\033[1;31m🮙\033[1;0m");
             else
@@ -236,32 +235,32 @@ void collapse_cell(cell_t* cell, rule_set_t* rule_set, short tt_nb_of_classes) {
     if (cell == NULL || cell->classes == 0)
         return;
 
-    const class_t max_class = class_number(tt_nb_of_classes);
+    const class_t max_class = get_class(tt_nb_of_classes);
 
     class_t classes = cell->classes;
     for (direction_t d = 0; d < NB_OF_DIRECTIONS; ++d) {
-        if (cell->neighbours[d] != NULL && cell->neighbours[d]->entropy != 1) {
+        if (cell->neighbors[d] != NULL && cell->neighbors[d]->entropy != 1) {
 
-            class_t neighbour_classes = cell->neighbours[d]->classes;
+            class_t neighbour_classes = cell->neighbors[d]->classes;
             class_t possibilities = 0;
 
             for (class_t class = 1; class <= max_class; class <<= 1) {
                 if (class & classes) {
-                    possibilities |= (*rule_set)[get_class_id(class)][d];
+                    possibilities |= (*rule_set)[get_id_of_class(class)][d];
                 }
             }
 
-            cell->neighbours[d]->classes &= possibilities;
+            cell->neighbors[d]->classes &= possibilities;
 
-            if (neighbour_classes != cell->neighbours[d]->classes) {
+            if (neighbour_classes != cell->neighbors[d]->classes) {
                 // printf(" %s\t| ", direction_strings[d]);
                 // print_classes(neighbour_classes, displayer, tt_nb_of_classes );
                 // printf("\t-> ");
-                // print_classes(cell->neighbours[d]->classes, displayer, tt_nb_of_classes );
+                // print_classes(cell->neighbors[d]->classes, displayer, tt_nb_of_classes );
                 // printf("\n");
 
-                cell->neighbours[d]->entropy = get_entropy(cell->neighbours[d]->classes);
-                collapse_cell(cell->neighbours[d], rule_set, tt_nb_of_classes);
+                cell->neighbors[d]->entropy = get_entropy(cell->neighbors[d]->classes);
+                collapse_cell(cell->neighbors[d], rule_set, tt_nb_of_classes);
             }
         }
     }
@@ -293,8 +292,6 @@ void collapse_random_cell(field_t* field) {
 
 void collapse(field_t* field)
 {
-
-    char* displayer[] = {" ", "┃", "┳", "┗", "┛", "𜱵"};
     do
     {
         collapse_random_cell(field);
