@@ -76,11 +76,10 @@ typedef enum direction : short {
  * A cell of the grid
  */
 typedef struct cell {
-
     /**
      * An array of pointer to the neighbors of the cell?
      */
-    struct cell* neighbors[8];
+    struct cell *neighbors[8];
 
     /**
      * The class_t the cell holds.
@@ -100,7 +99,7 @@ typedef struct cell {
 /**
  * Double array of cell_t pointer that represent the grid where the wave function collapse occurs.
  */
-typedef cell_t*** grid_t;
+typedef cell_t ***grid_t;
 
 /**
  * Where all the main data are located, including the grid_t, it's width and height, the rule_set_t and the number of classes.
@@ -126,7 +125,7 @@ typedef struct field {
      */
     short tt_nb_of_classes;
 
-    rule_set_t* rule_set;
+    rule_set_t *rule_set;
 } field_t;
 
 
@@ -138,20 +137,20 @@ typedef struct field {
  * @param tt_nb_of_classes The number of classes the grid_t will hold.
  * @return The initialized field_t.
  */
-field_t* init_field(rule_set_t* rule_set, int width, int height, short tt_nb_of_classes);
+field_t *init_field(rule_set_t *rule_set, int width, int height, short tt_nb_of_classes);
 
 /**
  * Print the field_t to the terminal.
  * @param field The field to print
  * @param displayer An array of string, the array must have the size of @code field->width\endcode.
  */
-void print_field(field_t* field, char* displayer[field->width]);
+void print_field(field_t *field, char *displayer[field->width]);
 
 /**
  * Free the field_t from the memory.
  * @param field the field to free.
  */
-void free_field(field_t* field);
+void free_field(field_t *field);
 
 // ###################################################################################
 //                                    WFC Algorithm
@@ -161,7 +160,17 @@ void free_field(field_t* field);
  * Collapse the field_t according to the @code field->rule_set\endcode.
  * @warning Uses the default @code rand()\endcode function so running two times the same code will give the same result.
  * @param field The field to collapse.
+ * @warning if any cell contain a class of 0, that means that during collapsing, this cell encountered a situation where no class could be placed.
  */
-void collapse(field_t* field);
+void collapse(field_t *field);
+
+/**
+ * Collapse the field_t according to the @code field->rule_set\endcode. and print each step.
+ * @warning Uses the default @code rand()\endcode function so running two times the same code will give the same result.
+ * @param field The field to collapse.
+ * @param displayer An array of string representing how the field should be printed
+ * @warning if any cell contain a class of 0, that means that during collapsing, this cell encountered a situation where no class could be placed.
+ */
+void debug_collapse(field_t *field, char *displayer[field->tt_nb_of_classes]);
 
 #endif //WAVEFUNCTIONCOLLAPSE_CLASS_H

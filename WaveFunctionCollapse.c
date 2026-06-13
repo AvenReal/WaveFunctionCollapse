@@ -295,7 +295,13 @@ void collapse(field_t* field)
     do
     {
         collapse_random_cell(field);
-        // print_field(field, displayer);
 
     } while(!is_collapsed(field));
+}
+
+void debug_collapse(field_t *field, char *displayer[field->tt_nb_of_classes]) {
+    do {
+        collapse_random_cell(field);
+        print_field(field, displayer);
+    } while (!is_collapsed(field));
 }

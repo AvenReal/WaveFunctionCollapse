@@ -21,7 +21,7 @@ Additionally, you can have a `class_t` that holds all of your classes at once. u
 
 *Warning: You can have up to 64 different classes.*
 
-Example:
+*Example:*
 ```c
 const class_t SAND = get_class(0);
 const class_t SEA = get_class(1);
@@ -36,8 +36,51 @@ Simply declare a `rule_set_t` variable for the rule set,
 ```c
 rule_set_t rule_set;
 ```
-after that you can declare the rules for each class by declaring a `rule_t` variable. A `rule_t` variable is simply array of 8 `class_t`. Representing which class can lay next to a given class.
 
+After that you can declare the rules for each class by declaring a `rule_t` variable. A `rule_t` variable is simply
+array of 8 `class_t`.
+Representing which class can lay next to a given class. Each index of the array correspond to a direction such as:
+
+```c
+const rule_t CLASS_RULE = {NorthWest, North, NorthEast, West, East, SouthWest, South, SouthEast};
+```
+
+If multiple classes can be next to the class you are defining the rules, simply put them together with a or `|` operator
+in between, such as `CLASS_A | CLASS_B`.
+
+*Tips: If you want a "all classes except one" situation you can do so using `ANY ^ EXCLUDED_CLASS`.*
+
+Finally add all your `rule_t` to the `rule_set_t` using the
+`void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule)` function.
+
+*Example:*
+
+```c
+const rule_t SAND_RULE = {LAND | SAND, LAND | SAND, LAND | SAND, LAND | SAND, SAND | SEA, SAND | SEA, SAND | SEA, SAND | SEA};
+add_rule_to_rule_set(rule_set, SAND, SAND_RULE);
+
+const rule_t SEA_RULE = {SEA | SAND, SEA | SAND, SEA | SAND, SEA | SAND, SEA, SEA, SEA, SEA};
+add_rule_to_rule_set(rule_set, SEA, SEA_RULE);
+
+const rule_t LAND_RULE = {LAND, LAND, LAND, LAND, LAND | SAND, LAND | SAND, LAND | SAND, LAND | SAND};
+add_rule_to_rule_set(rule_set, LAND, LAND_RULE);
+```
+
+## Step 3: Initialize your `field_t` and collapse
+
+Uning the `field_t* init_field(rule_set_t* rule_set, int width, int height, short tt_nb_of_classes);` you can initi
+
+```c
+field_t* field = init_field(&rule_set, 80, 20, 3);
+
+collapse(field);
+
+char* displayer[] = {" ", "▒", "█"};
+
+print_field(field, displayer);
+
+free_field(field);
+```
 
 # Examples
 ## Example 1 : The Beach

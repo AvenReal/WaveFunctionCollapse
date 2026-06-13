@@ -44,8 +44,7 @@ int main() {
     const rule_t LAND_RULE = {LAND, LAND, LAND, LAND, LAND | SAND, LAND | SAND, LAND | SAND, LAND | SAND};
     add_rule_to_rule_set(rule_set, LAND, LAND_RULE);
 
-    field_t* field = init_field(&rule_set, 80,20, 3);
-
+    field_t *field = init_field(&rule_set, 80, 20, 3);
 
     collapse(field);
 
