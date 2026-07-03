@@ -295,7 +295,7 @@ void collapse(field_t *field) {
 }
 
 void debug_collapse(field_t *field, char *displayer[field->tt_nb_of_classes], int steps) {
-    for (int i = 0; i != steps; ++i) {
+    for (int i = 0; i != steps && !is_collapsed(field); ++i) {
         collapse_random_cell(field, 1, displayer);
         print_field(field, displayer);
     }
