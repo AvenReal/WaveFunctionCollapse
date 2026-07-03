@@ -83,9 +83,9 @@ int main() {
 
     char* displayer[] = {" ", "┃", "┳", "┗", "┛", "𜱵"};
 
-    debug_collapse(field, displayer, -1);
+    debug_collapse(field, displayer, 5);
 
-    print_field(field, displayer );
+    print_field(field, displayer);
 
     return 0;
 }

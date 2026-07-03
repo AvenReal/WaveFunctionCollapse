@@ -47,7 +47,6 @@ int main() {
     const class_t DONT_HAVE_WEST_CONNECTOR  = V_PIPE | NE_CORNER | SE_CORNER;
 
     const class_t ANY = get_any_class(NB_CLASSES);
-    // printf("any: %llu\n", any);
 
     rule_set_t rule_set;
 

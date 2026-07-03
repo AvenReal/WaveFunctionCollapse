@@ -48,13 +48,12 @@ const rule_t CLASS_RULE = {NorthWest, North, NorthEast, West, East, SouthWest, S
 If multiple classes can be next to the class you are defining the rules, simply put them together with a or `|` operator
 in between, such as `CLASS_A | CLASS_B`.
 
-*Tips: If you want a "all classes except one" situation you can do so using `ANY ^ EXCLUDED_CLASS`.*
+*Tips: If you want an "all classes except one" situation you can do so using `ANY ^ EXCLUDED_CLASS`.*
 
 Finally add all your `rule_t` to the `rule_set_t` using the
 `void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule)` function.
 
 *Example:*
-
 ```c
 const rule_t SAND_RULE = {LAND | SAND, LAND | SAND, LAND | SAND, LAND | SAND, SAND | SEA, SAND | SEA, SAND | SEA, SAND | SEA};
 add_rule_to_rule_set(rule_set, SAND, SAND_RULE);
@@ -68,8 +67,18 @@ add_rule_to_rule_set(rule_set, LAND, LAND_RULE);
 
 ## Step 3: Initialize your `field_t` and collapse
 
-Uning the `field_t* init_field(rule_set_t* rule_set, int width, int height, short tt_nb_of_classes);` you can initi
+Using the `field_t* init_field(rule_set_t* rule_set, int width, int height, short tt_nb_of_classes);` function you can
+initialize the `field` your collapse will occur.
 
+To collapse your field, simply use the `void collapse(field_t *field)` function.
+
+*Tips: If you want to see step by step what is going on the collapsing step, you can use
+the `void debug_collapse(field_t *field, char *displayer[field->tt_nb_of_classes], int steps)` function.*
+
+Once collapsed, you can print the result in the terminal using the
+`void print_field(field_t *field, char *displayer[field->width])` function.
+
+*Example:*
 ```c
 field_t* field = init_field(&rule_set, 80, 20, 3);
 
@@ -156,5 +165,32 @@ free_field(field);
 │┛┗┛𜱵  ┗┳┛𜱵 𜱵┗┳┳┛ 𜱵𜱵𜱵 𜱵┗┛┗┛𜱵┗┛ 𜱵┗┳┳┳┳┳┳┳┳┛𜱵 ┗┛ 𜱵┗┛ ┗┳┳┛ ┗┳┳┳┳┛𜱵┗┳┛   𜱵 𜱵 𜱵𜱵┗┳┳┳┳┳│
 │┳┳┳┛𜱵  ┃ ┗┳┛ ┗┛ 𜱵┗┛┗┳┛𜱵𜱵 𜱵┗┳┳┳┛𜱵┗┛┗┛┗┛┗┛ ┗┳┳┳┳┛    ┃┗┳┳┳┛┗┛┗┳┛ ┃ 𜱵  ┗┳┛ ┗┛𜱵┗┛┗┛┗│
 │┗┛┗┳┛ 𜱵┃ 𜱵┗┳┳┳┳┳┛ 𜱵 ┗┳┛┗┳┛ ┗┛┗┳┛   𜱵  𜱵   ┗┛┗┛𜱵𜱵 𜱵𜱵┃𜱵┗┛┗┳┳┳┳┛𜱵𜱵┃𜱵┗┳┳┳┛ 𜱵  ┗┳┳┳┳┳│
+╰────────────────────────────────────────────────────────────────────────────────╯
+```
+
+## Example 4: The Noise
+
+```
+╭────────────────────────────────────────────────────────────────────────────────╮
+│┓  ┃ ┃ ┃ ┏━━┛ ┏┛ ┏━━┛ ┃   ┗┓     ┃   ┃ ┃ ┃  ┃   ┗┓    ┃ ┏┛    ┏━┓ ┃ ┃  ┗┓ ┗┓ ┃ ┃│
+│┗━━┛ ┃ ┗━┛   ┏┛  ┃    ┗━┓  ┗━━━┓ ┗┓  ┗━┛ ┗┓ ┗━━┓ ┗━━┓ ┗━┛     ┃ ┃ ┗━┛   ┗┓ ┃ ┗━┛│
+│    ┏┛     ┏━┛ ┏━┛ ┏━┓  ┗━┓    ┃  ┃       ┃    ┗┓   ┃     ┏━┓ ┃ ┃    ┏━┓ ┃ ┗┓   │
+│━┓  ┃  ┏━┓ ┃   ┃   ┃ ┗━┓  ┃  ┏━┛  ┃     ┏━┛     ┃ ┏━┛ ┏━┓ ┃ ┃ ┃ ┗━┓  ┃ ┃ ┃  ┗┓  │
+│ ┗┓ ┃ ┏┛ ┃ ┗━━━┛   ┗┓  ┃  ┗━━┛    ┗━━┓ ┏┛     ┏━┛ ┃  ┏┛ ┃ ┃ ┃ ┗┓  ┃ ┏┛ ┃ ┗━┓ ┃  │
+│  ┗━┛ ┃  ┃      ┏━┓ ┃  ┃       ┏━┓   ┃ ┃   ┏━━┛   ┃ ┏┛ ┏┛ ┃ ┗┓ ┃  ┃ ┃ ┏┛   ┗━┛  │
+│     ┏┛ ┏┛ ┏━┓  ┃ ┃ ┃  ┃     ┏━┛ ┃   ┃ ┗━┓ ┃    ┏━┛ ┃ ┏┛  ┃  ┃ ┃  ┗━┛ ┃ ┏━┓   ┏━│
+│┓    ┃  ┃ ┏┛ ┗┓ ┃ ┃ ┗━━┛ ┏━┓ ┃   ┗┓  ┃   ┃ ┗┓   ┃  ┏┛ ┃  ┏┛ ┏┛ ┗━┓   ┏┛ ┃ ┃ ┏━┛ │
+│┃  ┏━┛  ┃ ┃   ┃ ┗━┛      ┃ ┗━┛    ┗━━┛   ┗┓ ┃   ┃  ┃ ┏┛  ┃ ┏┛    ┃   ┃ ┏┛ ┃ ┃   │
+│┛  ┃  ┏━┛ ┗━┓ ┗┓   ┏━┓   ┃            ┏━┓ ┃ ┗━┓ ┃  ┃ ┃   ┃ ┃ ┏━┓ ┗┓  ┃ ┃ ┏┛ ┃ ┏━│
+│ ┏━┛ ┏┛     ┗┓ ┗━┓ ┃ ┗━━━┛ ┏━━━━━━━┓  ┃ ┃ ┗┓  ┃ ┃ ┏┛ ┗━━━┛ ┃ ┃ ┗┓ ┗━━┛ ┗━┛  ┃ ┃ │
+│ ┃   ┃  ┏━━┓ ┃   ┗━┛       ┃       ┗━━┛ ┃  ┃  ┗━┛ ┃        ┃ ┗┓ ┗┓        ┏━┛ ┃ │
+│ ┗━┓ ┗┓ ┃  ┗━┛       ┏━━━┓ ┗┓   ┏━┓     ┃  ┗━┓   ┏┛ ┏━┓ ┏━━┛  ┃  ┃       ┏┛  ┏┛ │
+│   ┃  ┃ ┗━┓     ┏━┓ ┏┛   ┗┓ ┃  ┏┛ ┗━━┓  ┗━┓  ┗┓ ┏┛  ┃ ┃ ┃   ┏━┛  ┃       ┃ ┏━┛ ┏│
+│┓  ┗┓ ┗┓  ┗━━━┓ ┃ ┗━┛ ┏━┓ ┗━┛  ┃     ┃    ┗┓  ┗━┛   ┃ ┃ ┃ ┏━┛    ┗┓  ┏━━━┛ ┃   ┃│
+│┃   ┗┓ ┃      ┃ ┗┓    ┃ ┗┓     ┗┓    ┃ ┏━┓ ┗┓       ┗━┛ ┗━┛  ┏━┓  ┗━━┛     ┗┓  ┃│
+│┗━━┓ ┃ ┃ ┏━┓ ┏┛  ┗━┓  ┗┓ ┃      ┗━━━━┛ ┃ ┗┓ ┗┓               ┃ ┗━┓      ┏━┓ ┃  ┃│
+│   ┃ ┃ ┗━┛ ┃ ┃     ┃   ┗━┛ ┏━━┓       ┏┛  ┃  ┗━━━┓    ┏━━━┓ ┏┛   ┃  ┏━┓ ┃ ┗━┛ ┏┛│
+│┓ ┏┛ ┃     ┃ ┗━━━┓ ┗━┓    ┏┛  ┃ ┏━┓   ┃   ┗━┓    ┃   ┏┛   ┃ ┃  ┏━┛  ┃ ┃ ┗┓   ┏┛ │
+│┃ ┃  ┗┓    ┗┓    ┗┓  ┗┓ ┏━┛  ┏┛ ┃ ┗┓  ┗━━┓  ┃ ┏━━┛ ┏━┛  ┏━┛ ┗┓ ┃  ┏━┛ ┃  ┗━┓ ┃ ┏│
 ╰────────────────────────────────────────────────────────────────────────────────╯
 ```

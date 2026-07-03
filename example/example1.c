@@ -1,6 +1,4 @@
 #include "../WaveFunctionCollapse.h"
-#include <stdio.h>
-
 
 int main() {
 
