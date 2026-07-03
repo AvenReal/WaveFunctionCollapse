@@ -78,6 +78,10 @@ the `void debug_collapse(field_t *field, char *displayer[field->tt_nb_of_classes
 Once collapsed, you can print the result in the terminal using the
 `void print_field(field_t *field, char *displayer[field->width])` function.
 
+When you don't need it anymore, simply free the `field` using the `void free_field(field_t *field);` function.
+
+And voilà !
+
 *Example:*
 ```c
 field_t* field = init_field(&rule_set, 80, 20, 3);
