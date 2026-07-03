@@ -169,8 +169,9 @@ void collapse(field_t *field);
  * @warning Uses the default @code rand()\endcode function so running two times the same code will give the same result.
  * @param field The field to collapse.
  * @param displayer An array of string representing how the field should be printed
+ * @param steps The number of collapse step to perform ( < 0 => all)
  * @warning if any cell contain a class of 0, that means that during collapsing, this cell encountered a situation where no class could be placed.
  */
-void debug_collapse(field_t *field, char *displayer[field->tt_nb_of_classes]);
+void debug_collapse(field_t *field, char *displayer[field->tt_nb_of_classes], int steps);
 
 #endif //WAVEFUNCTIONCOLLAPSE_CLASS_H
