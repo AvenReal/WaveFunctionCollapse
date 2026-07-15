@@ -1,6 +1,10 @@
 #ifndef WAVEFUNCTIONCOLLAPSE_CLASS_H
 #define WAVEFUNCTIONCOLLAPSE_CLASS_H
 
+#include <err.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 // ###################################################################################
 //                                    CLASS
 // ###################################################################################
