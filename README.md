@@ -10,7 +10,7 @@ A simple Wave Function Collapse Project
 
 **Rule Set** : The set of all rules (so for each class).
 
-**Field** : the grid where the wave function collapse occurs.
+**Field** : The grid where the wave function collapse occurs.
 
 # How to use ?
 
