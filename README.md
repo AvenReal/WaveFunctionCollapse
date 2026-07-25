@@ -1,5 +1,5 @@
 # WaveFunctionCollapse
-A simple Wave Function Collapse Project
+A simple [Wave Function Collapse](https://en.wikipedia.org/wiki/Model_synthesis) Project.
 
 # Vocabulary
 **Class** : A tile of the wave function collapse (ex: land, beach or sea).
@@ -12,6 +12,28 @@ A simple Wave Function Collapse Project
 
 **Field** : The grid where the wave function collapse occurs.
 
+# Installation
+
+### Get the `.c` and `.h` files
+Linux:
+```
+curl -o WaveFunctionCollapse.c https://raw.githubusercontent.com/AvenReal/WaveFunctionCollapse/refs/heads/main/WaveFunctionCollapse.c
+curl -o WaveFunctionCollapse.h https://raw.githubusercontent.com/AvenReal/WaveFunctionCollapse/refs/heads/main/WaveFunctionCollapse.h
+```
+Windows
+```
+wget -o WaveFunctionCollapse.c https://raw.githubusercontent.com/AvenReal/WaveFunctionCollapse/refs/heads/main/WaveFunctionCollapse.c
+wget -o WaveFunctionCollapse.h https://raw.githubusercontent.com/AvenReal/WaveFunctionCollapse/refs/heads/main/WaveFunctionCollapse.h
+```
+## Dependencies
+
+NONE !
+
+## Include
+
+Include the .h file where you want to use it using `#include "WaveFunctionCollapse.h"` in your `.c` file.
+
+Don't forget to also compile and link the `WaveFunctionCollapse.c` file whencompiling.
 # How to use ?
 
 ## Step 1: Declare your classes

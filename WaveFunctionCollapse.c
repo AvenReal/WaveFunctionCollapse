@@ -1,5 +1,5 @@
 #include "WaveFunctionCollapse.h"
-#include <stdlib.h>
+
 
 char *direction_strings[] = {
     "NorthWest",
