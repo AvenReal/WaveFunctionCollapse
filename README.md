@@ -1,6 +1,6 @@
 # WaveFunctionCollapse
 A simple [Wave Function Collapse](https://en.wikipedia.org/wiki/Model_synthesis) Project.
-
+[![RepoGrade](https://www.repo-grade.com/api/badge/avenreal/wavefunctioncollapse)](https://www.repo-grade.com/report/avenreal/wavefunctioncollapse)
 # Vocabulary
 **Class** : A tile of the wave function collapse (ex: land, beach or sea).
 
