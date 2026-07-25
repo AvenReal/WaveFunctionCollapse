@@ -1,4 +1,5 @@
 #include "WaveFunctionCollapse.h"
+#include <stdlib.h>
 
 char *direction_strings[] = {
     "NorthWest",
@@ -223,6 +224,15 @@ short get_entropy(class_t class) {
     return entropy;
 }
 
+char* indent(short n){
+    char* res = malloc(n + 1);
+    for (int i = 0; i < n; i++) {
+        res[i] = '\t';
+    }
+    res[n] = 0;
+    return res;
+}
+
 void collapse_cell(cell_t *cell, rule_set_t *rule_set, short tt_nb_of_classes, short debug, char *displayer[]) {
     if (cell == NULL || cell->classes == 0)
         return;
@@ -245,14 +255,16 @@ void collapse_cell(cell_t *cell, rule_set_t *rule_set, short tt_nb_of_classes, s
 
             if (neighbour_classes != cell->neighbors[d]->classes) {
                 if (debug) {
-                    printf(" %s\t| ", direction_strings[d]);
+                    char* ind = indent(debug);
+                    printf("%s%s\t| ", ind, direction_strings[d]);
+                    free(ind);
                     print_classes(neighbour_classes, displayer, tt_nb_of_classes);
                     printf("\t-> ");
                     print_classes(cell->neighbors[d]->classes, displayer, tt_nb_of_classes);
                     printf("\n");
                 }
                 cell->neighbors[d]->entropy = get_entropy(cell->neighbors[d]->classes);
-                collapse_cell(cell->neighbors[d], rule_set, tt_nb_of_classes, debug, displayer);
+                collapse_cell(cell->neighbors[d], rule_set, tt_nb_of_classes, debug ? debug + 1 : debug, displayer);
             }
         }
     }
