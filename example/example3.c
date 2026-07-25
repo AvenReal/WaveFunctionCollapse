@@ -47,7 +47,7 @@ int main() {
 
     field_t* field = init_field(&rule_set, 80, 20, tt_nb_of_classes);
 
-    char* displayer[] = {" ", "▅", "▉"};
+    char* displayer[] = {" ", "▅", "█"};
 
     debug_collapse(field, displayer, 20);
     collapse(field);
