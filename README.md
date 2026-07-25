@@ -34,7 +34,7 @@ NONE !
 Include the .h file where you want to use it using `#include "WaveFunctionCollapse.h"` in your `.c` file.
 
 Don't forget to also compile and link the `WaveFunctionCollapse.c` file whencompiling.
-# How to use ?
+# Usage 
 
 ## Step 1: Declare your classes
 Declare all your classes using the `class_t class_number(unsigned short id)` function. the `id` should be unique for each class.

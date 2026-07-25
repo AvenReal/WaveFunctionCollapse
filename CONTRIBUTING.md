@@ -1,0 +1,1 @@
+Everyone is welcome to contribute to the project: optimize and/or add functionalities, correct mistakes, spelling errors, or whatever you want!
