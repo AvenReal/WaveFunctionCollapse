@@ -1,19 +1,8 @@
 #include "WaveFunctionCollapse.h"
 
 
-char *direction_strings[] = {
-    "NorthWest",
-    "North",
-    "NorthEast",
-    "West",
-    "East",
-    "SouthWest",
-    "South",
-    "SouthEast"
-};
-
 // ###################################################################################
-//                                    CLASS
+//                                    CLASSES
 // ###################################################################################
 
 class_t get_class(const unsigned short id) {

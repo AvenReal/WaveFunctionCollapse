@@ -62,6 +62,20 @@ void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule)
 //                                    CELLS
 // ###################################################################################
 
+/*
+ * Help convert direction do it's string form.
+ */
+const char* direction_strings[] = {
+    "NorthWest",
+    "North",
+    "NorthEast",
+    "West",
+    "East",
+    "SouthWest",
+    "South",
+    "SouthEast"
+};
+
 /**
  * Helps convert the relative position in the grid to the index in the rule_set_t array.
  */
