@@ -1,7 +1,10 @@
 # WaveFunctionCollapse
+
 A simple [Wave Function Collapse](https://en.wikipedia.org/wiki/Model_synthesis) Project.
 [![RepoGrade](https://www.repo-grade.com/api/badge/avenreal/wavefunctioncollapse)](https://www.repo-grade.com/report/avenreal/wavefunctioncollapse)
+
 # Vocabulary
+
 **Class** : A tile of the wave function collapse (ex: land, beach or sea).
 
 **Entropy** : The number of possible classes a cell can hold.
@@ -15,16 +18,21 @@ A simple [Wave Function Collapse](https://en.wikipedia.org/wiki/Model_synthesis)
 # Installation
 
 ### Get the `.c` and `.h` files
+
 Linux:
+
 ```
 curl -o WaveFunctionCollapse.c https://raw.githubusercontent.com/AvenReal/WaveFunctionCollapse/refs/heads/main/WaveFunctionCollapse.c
 curl -o WaveFunctionCollapse.h https://raw.githubusercontent.com/AvenReal/WaveFunctionCollapse/refs/heads/main/WaveFunctionCollapse.h
 ```
+
 Windows
+
 ```
 wget -o WaveFunctionCollapse.c https://raw.githubusercontent.com/AvenReal/WaveFunctionCollapse/refs/heads/main/WaveFunctionCollapse.c
 wget -o WaveFunctionCollapse.h https://raw.githubusercontent.com/AvenReal/WaveFunctionCollapse/refs/heads/main/WaveFunctionCollapse.h
 ```
+
 ## Dependencies
 
 NONE !
@@ -34,16 +42,19 @@ NONE !
 Include the .h file where you want to use it using `#include "WaveFunctionCollapse.h"` in your `.c` file.
 
 Don't forget to also compile and link the `WaveFunctionCollapse.c` file whencompiling.
-# Usage 
+
+# Usage
 
 ## Step 1: Declare your classes
+
 Declare all your classes using the `class_t class_number(unsigned short id)` function. the `id` should be unique for each class.
 
 Additionally, you can have a `class_t` that holds all of your classes at once. using the `class_t get_any_class(unsigned short tt_nb_of_classes)` function.
 
-*Warning: You can have up to 64 different classes.*
+_Warning: You can have up to 64 different classes._
 
-*Example:*
+_Example:_
+
 ```c
 const class_t SAND = get_class(0);
 const class_t SEA = get_class(1);
@@ -52,9 +63,10 @@ const class_t LAND = get_class(2);
 const class_t ANY = get_any_class(3);
 ```
 
-## Step 2: Declare your rules and rule set 
+## Step 2: Declare your rules and rule set
 
-Simply declare a `rule_set_t` variable for the rule set, 
+Simply declare a `rule_set_t` variable for the rule set,
+
 ```c
 rule_set_t rule_set;
 ```
@@ -70,12 +82,13 @@ const rule_t CLASS_RULE = {NorthWest, North, NorthEast, West, East, SouthWest, S
 If multiple classes can be next to the class you are defining the rules, simply put them together with a or `|` operator
 in between, such as `CLASS_A | CLASS_B`.
 
-*Tips: If you want an "all classes except one" situation you can do so using `ANY ^ EXCLUDED_CLASS`.*
+_Tips: If you want an "all classes except one" situation you can do so using `ANY ^ EXCLUDED_CLASS`._
 
 Finally add all your `rule_t` to the `rule_set_t` using the
 `void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule)` function.
 
-*Example:*
+_Example:_
+
 ```c
 const rule_t SAND_RULE = {LAND | SAND, LAND | SAND, LAND | SAND, LAND | SAND, SAND | SEA, SAND | SEA, SAND | SEA, SAND | SEA};
 add_rule_to_rule_set(rule_set, SAND, SAND_RULE);
@@ -94,8 +107,8 @@ initialize the `field` your collapse will occur.
 
 To collapse your field, simply use the `void collapse(field_t *field)` function.
 
-*Tips: If you want to see step by step what is going on the collapsing step, you can use
-the `void debug_collapse(field_t *field, char *displayer[field->tt_nb_of_classes], int steps)` function.*
+_Tips: If you want to see step by step what is going on the collapsing step, you can use
+the `void debug_collapse(field_t *field, char *displayer[field->tt_nb_of_classes], int steps)` function._
 
 Once collapsed, you can print the result in the terminal using the
 `void print_field(field_t *field, char *displayer[field->width])` function.
@@ -104,7 +117,8 @@ When you don't need it anymore, simply free the `field` using the `void free_fie
 
 And voilà !
 
-*Example:*
+_Example:_
+
 ```c
 field_t* field = init_field(&rule_set, 80, 20, 3);
 
@@ -118,7 +132,9 @@ free_field(field);
 ```
 
 # Examples
+
 ## Example 1 : The Beach
+
 ```
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │░███████████████████████████████████████████████████████████████████████████████│
@@ -143,7 +159,9 @@ free_field(field);
 │                                                            ░░░░░░░░░░░░░░░░░░░░│
 ╰────────────────────────────────────────────────────────────────────────────────╯
 ```
+
 ## Example 2 : The Pipes
+
 ```
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │━━┛┗┛┏┓┏┓┏━┛┃┃┗┓┏━┛┗┛┗┛┏━┓┏━┛┗┓┃┗┓┃┃┗━┛┃┏┛┗┛┗┓┗┛┏━━┛┗┓┗┓┏┓┗┓┗┓┃┗┓┏┓┏┓┏━┛┗┓┏┛┗┓┗━│
@@ -168,7 +186,9 @@ free_field(field);
 │┛┗┓┗┓┃┗┓┗┓┏━┓┗━┓┃┃┃┗┓┗┛┗━┛┏┛┏━┛┏┛┏┓┃┏┛┃┏┛┏┓┏┓┃┏┛┃┃┃┏━┛┏┛┏┛┏━┓┏━┛┏┓┏┛┃┏┛┏━┓┗━━━┓┗│
 ╰────────────────────────────────────────────────────────────────────────────────╯
 ```
-## Example 3 : The Buildings 
+
+## Example 3 : The Buildings
+
 ```
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │       ▅   ▅          ▅      ▅                              ▉ ▉▅                │
