@@ -27,15 +27,15 @@ class_t get_any_class(const unsigned short tt_nb_of_classes)
 void print_classes(class_t classes, char *displayer[], short tt_nb_of_classes)
 {
     class_t max_class = get_class(tt_nb_of_classes);
-    printf("\"");
+    printf("🯙");
     for (class_t class = 1; class <= max_class; class <<= 1)
     {
         if (class & classes)
         {
-            printf("%s ", displayer[get_id_of_class(class)]);
+            printf("'%s', ", displayer[get_id_of_class(class)]);
         }
     }
-    printf("\"");
+    printf("🯛");
 }
 
 // ###################################################################################
@@ -269,15 +269,12 @@ short get_entropy(class_t class)
     return entropy;
 }
 
-char *indent(short n)
+void print_indent(short n)
 {
-    char *res = malloc(n + 1);
     for (int i = 0; i < n; i++)
     {
-        res[i] = '\t';
+        printf("\t┊");
     }
-    res[n] = 0;
-    return res;
 }
 
 void collapse_cell(
@@ -311,11 +308,10 @@ void collapse_cell(
             {
                 if (debug)
                 {
-                    char *ind = indent(debug);
-                    printf("%s%s\t| ", ind, direction_strings[d]);
-                    free(ind);
+                    print_indent(debug);
+                    printf("%s: ", direction_strings[d]);
                     print_classes(neighbour_classes, displayer, tt_nb_of_classes);
-                    printf("\t-> ");
+                    printf(" -> ");
                     print_classes(cell->neighbors[d]->classes, displayer, tt_nb_of_classes);
                     printf("\n");
                 }
