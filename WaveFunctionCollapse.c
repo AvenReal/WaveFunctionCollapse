@@ -269,15 +269,12 @@ short get_entropy(class_t class)
     return entropy;
 }
 
-char *indent(short n)
+void print_indent(short n)
 {
-    char *res = malloc(n + 1);
     for (int i = 0; i < n; i++)
     {
-        res[i] = '\t';
+        putchar('\t');
     }
-    res[n] = 0;
-    return res;
 }
 
 void collapse_cell(
@@ -311,9 +308,8 @@ void collapse_cell(
             {
                 if (debug)
                 {
-                    char *ind = indent(debug);
-                    printf("%s%s\t| ", ind, direction_strings[d]);
-                    free(ind);
+                    print_indent(debug);
+                    printf("%s\t| ", direction_strings[d]);
                     print_classes(neighbour_classes, displayer, tt_nb_of_classes);
                     printf("\t-> ");
                     print_classes(cell->neighbors[d]->classes, displayer, tt_nb_of_classes);
