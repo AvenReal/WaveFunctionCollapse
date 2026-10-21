@@ -259,14 +259,7 @@ class_t get_random_class(class_t classes, short tt_nb_of_classes)
 
 short get_entropy(class_t class)
 {
-    short entropy = 0;
-    while (class > 0)
-    {
-        entropy += (class & 1);
-        class >>= 1;
-    }
-
-    return entropy;
+    return __builtin_popcountll(class);
 }
 
 char *indent(short n)
