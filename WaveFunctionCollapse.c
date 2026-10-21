@@ -38,15 +38,15 @@ class_t get_any_class(const unsigned short tt_nb_of_classes)
 void print_classes(class_t classes, char *displayer[], short tt_nb_of_classes)
 {
     class_t max_class = get_class(tt_nb_of_classes);
-    printf("\"");
+    printf("🯙");
     for (class_t class = 1; class <= max_class; class <<= 1)
     {
         if (class & classes)
         {
-            printf("%s ", displayer[get_id_of_class(class)]);
+            printf("'%s', ", displayer[get_id_of_class(class)]);
         }
     }
-    printf("\"");
+    printf("🯛");
 }
 
 // ###################################################################################
@@ -286,7 +286,7 @@ class_t get_random_class(class_t classes, short tt_nb_of_classes)
             nb_of_class++;
         }
     }
-    class_t *possible_classes = malloc(sizeof(class_t) * nb_of_class);
+    class_t possible_classes[64];
     int index = 0;
     for (class_t i = 1; i <= max_class; i <<= 1)
     {
@@ -297,7 +297,6 @@ class_t get_random_class(class_t classes, short tt_nb_of_classes)
         }
     }
     class_t result = possible_classes[rand() % nb_of_class];
-    free(possible_classes);
     return result;
 }
 
@@ -312,14 +311,7 @@ class_t get_random_class(class_t classes, short tt_nb_of_classes)
  */
 short get_entropy(class_t class)
 {
-    short entropy = 0;
-    while (class > 0)
-    {
-        entropy += (class & 1);
-        class >>= 1;
-    }
-
-    return entropy;
+    return __builtin_popcountll(class);
 }
 
 /*
@@ -331,15 +323,12 @@ short get_entropy(class_t class)
 -
 -  Returns: A newly allocated string of tabs.
  */
-char *indent(short n)
+void print_indent(short n)
 {
-    char *res = malloc(n + 1);
     for (int i = 0; i < n; i++)
     {
-        res[i] = '\t';
+        printf("\t┊");
     }
-    res[n] = 0;
-    return res;
 }
 
 /*
@@ -386,11 +375,10 @@ void collapse_cell(
             {
                 if (debug)
                 {
-                    char *ind = indent(debug);
-                    printf("%s%s\t| ", ind, direction_strings[d]);
-                    free(ind);
+                    print_indent(debug);
+                    printf("%s: ", direction_strings[d]);
                     print_classes(neighbour_classes, displayer, tt_nb_of_classes);
-                    printf("\t-> ");
+                    printf(" -> ");
                     print_classes(cell->neighbors[d]->classes, displayer, tt_nb_of_classes);
                     printf("\n");
                 }
