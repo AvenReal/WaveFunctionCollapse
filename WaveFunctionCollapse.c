@@ -27,15 +27,15 @@ class_t get_any_class(const unsigned short tt_nb_of_classes)
 void print_classes(class_t classes, char *displayer[], short tt_nb_of_classes)
 {
     class_t max_class = get_class(tt_nb_of_classes);
-    printf("\"");
+    printf("🯙");
     for (class_t class = 1; class <= max_class; class <<= 1)
     {
         if (class & classes)
         {
-            printf("%s ", displayer[get_id_of_class(class)]);
+            printf("'%s', ", displayer[get_id_of_class(class)]);
         }
     }
-    printf("\"");
+    printf("🯛");
 }
 
 // ###################################################################################
@@ -273,7 +273,7 @@ void print_indent(short n)
 {
     for (int i = 0; i < n; i++)
     {
-        putchar('\t');
+        printf("\t┊");
     }
 }
 
@@ -309,9 +309,9 @@ void collapse_cell(
                 if (debug)
                 {
                     print_indent(debug);
-                    printf("%s\t| ", direction_strings[d]);
+                    printf("%s: ", direction_strings[d]);
                     print_classes(neighbour_classes, displayer, tt_nb_of_classes);
-                    printf("\t-> ");
+                    printf(" -> ");
                     print_classes(cell->neighbors[d]->classes, displayer, tt_nb_of_classes);
                     printf("\n");
                 }
