@@ -242,7 +242,7 @@ class_t get_random_class(class_t classes, short tt_nb_of_classes)
             nb_of_class++;
         }
     }
-    class_t *possible_classes = malloc(sizeof(class_t) * nb_of_class);
+    class_t possible_classes[64];
     int index = 0;
     for (class_t i = 1; i <= max_class; i <<= 1)
     {
@@ -253,7 +253,6 @@ class_t get_random_class(class_t classes, short tt_nb_of_classes)
         }
     }
     class_t result = possible_classes[rand() % nb_of_class];
-    free(possible_classes);
     return result;
 }
 
