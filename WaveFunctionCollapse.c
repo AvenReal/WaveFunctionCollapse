@@ -80,6 +80,8 @@ field_t *
 init_field(rule_set_t *rule_set, const int width, const int height, const short tt_nb_of_classes)
 {
     field_t *field = malloc(sizeof(field_t));
+    if (field == NULL)
+        errx(EXIT_FAILURE, "WaveFunctionCollapse.c -> init_field() -> field malloc failed!");
 
     field->height = height;
     field->width = width;
@@ -95,7 +97,7 @@ init_field(rule_set_t *rule_set, const int width, const int height, const short 
 
     for (int i = 0; i < height; ++i)
     {
-        field->grid[i] = malloc(sizeof(cell_t) * width);
+        field->grid[i] = malloc(sizeof(cell_t *) * width);
         if (field->grid[i] == NULL)
             errx(
                 EXIT_FAILURE,
@@ -105,6 +107,12 @@ init_field(rule_set_t *rule_set, const int width, const int height, const short 
         for (int j = 0; j < width; ++j)
         {
             field->grid[i][j] = malloc(sizeof(cell_t));
+            if (field->grid[i][j] == NULL)
+                errx(
+                    EXIT_FAILURE,
+                    "WaveFunctionCollapse.c -> init_field() -> "
+                    "field->grid[i][j] malloc failed!"
+                );
         }
     }
 
@@ -242,7 +250,13 @@ class_t get_random_class(class_t classes, short tt_nb_of_classes)
             nb_of_class++;
         }
     }
-    class_t possible_classes[64];
+    class_t *possible_classes = malloc(sizeof(class_t) * nb_of_class);
+    if (possible_classes == NULL)
+        errx(
+            EXIT_FAILURE,
+            "WaveFunctionCollapse.c -> get_random_class() -> possible_classes malloc failed!"
+        );
+
     int index = 0;
     for (class_t i = 1; i <= max_class; i <<= 1)
     {
@@ -253,13 +267,11 @@ class_t get_random_class(class_t classes, short tt_nb_of_classes)
         }
     }
     class_t result = possible_classes[rand() % nb_of_class];
+    free(possible_classes);
     return result;
 }
 
-short get_entropy(class_t class)
-{
-    return __builtin_popcountll(class);
-}
+short get_entropy(class_t class) { return __builtin_popcountll(class); }
 
 void print_indent(short n)
 {
