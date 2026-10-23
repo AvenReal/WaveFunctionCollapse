@@ -24,6 +24,17 @@ class_t get_any_class(const unsigned short tt_nb_of_classes)
     return ((class_t)(1) << tt_nb_of_classes) - 1;
 }
 
+/*
+- Function: print_classes
+- ----------------------------
+-  Prints the specified classes to the terminal using the given displayer.
+-
+-  classes: The class_t bitmask containing the classes to print.
+-  displayer: An array of strings representing the names or representations of the classes.
+-  tt_nb_of_classes: The total number of classes.
+-
+-  Returns: void
+ */
 void print_classes(class_t classes, char *displayer[], short tt_nb_of_classes)
 {
     class_t max_class = get_class(tt_nb_of_classes);
@@ -68,6 +79,19 @@ const short NB_OF_DIRECTIONS = 8;
 //                                    FIELD
 // ###################################################################################
 
+/*
+- Function: get_cell
+- ----------------------------
+-  Safely retrieves a cell from the grid at the specified coordinates.
+-
+-  grid: The 2D array (grid) of cells.
+-  y: The y-coordinate (row) of the cell.
+-  x: The x-coordinate (column) of the cell.
+-  height: The height of the grid.
+-  width: The width of the grid.
+-
+-  Returns: A pointer to the cell_t at the given coordinates, or NULL if out of bounds.
+ */
 cell_t *get_cell(grid_t grid, int y, int x, int height, int width)
 {
     if (y < 0 || y >= height || x < 0 || x >= width)
@@ -182,6 +206,16 @@ void free_field(field_t *field)
 //                                    WFC Algorithm
 // ###################################################################################
 
+/*
+- Function: get_random_min_entropy_cell
+- ----------------------------
+-  Finds and returns a random cell with the minimum entropy greater than 1.
+-
+-  field: The field to search within.
+-
+-  Returns: A pointer to a randomly selected cell_t with the minimum entropy.
+-  Error: Fails if memory allocation for candidate cells fails.
+ */
 cell_t *get_random_min_entropy_cell(field_t *field)
 {
     int min_entropy = 64;
@@ -231,6 +265,16 @@ cell_t *get_random_min_entropy_cell(field_t *field)
     return random_cell;
 }
 
+/*
+- Function: get_random_class
+- ----------------------------
+-  Selects a single random class from the provided bitmask of classes.
+-
+-  classes: The class_t bitmask containing the available classes.
+-  tt_nb_of_classes: The total number of classes.
+-
+-  Returns: A class_t containing exactly one randomly selected class.
+ */
 class_t get_random_class(class_t classes, short tt_nb_of_classes)
 {
     class_t max_class = ((class_t)1) << tt_nb_of_classes;
@@ -256,11 +300,29 @@ class_t get_random_class(class_t classes, short tt_nb_of_classes)
     return result;
 }
 
+/*
+- Function: get_entropy
+- ----------------------------
+-  Calculates the entropy (number of set bits) in a class_t bitmask.
+-
+-  class: The class_t bitmask to evaluate.
+-
+-  Returns: The calculated entropy as a short.
+ */
 short get_entropy(class_t class)
 {
     return __builtin_popcountll(class);
 }
 
+/*
+- Function: indent
+- ----------------------------
+-  Creates a string containing a specified number of tab characters.
+-
+-  n: The number of tabs.
+-
+-  Returns: A newly allocated string of tabs.
+ */
 void print_indent(short n)
 {
     for (int i = 0; i < n; i++)
@@ -269,6 +331,19 @@ void print_indent(short n)
     }
 }
 
+/*
+- Function: collapse_cell
+- ----------------------------
+-  Propagates the collapse recursively to neighboring cells based on the rule set.
+-
+-  cell: The cell that has just been collapsed or reduced in entropy.
+-  rule_set: The rules defining valid neighboring classes.
+-  tt_nb_of_classes: The total number of classes.
+-  debug: An integer indicating the depth of debug indentation, or 0 if disabled.
+-  displayer: An array of strings used for debug printing.
+-
+-  Returns: void
+ */
 void collapse_cell(
     cell_t *cell, rule_set_t *rule_set, short tt_nb_of_classes, short debug, char *displayer[]
 )
@@ -320,6 +395,15 @@ void collapse_cell(
     }
 }
 
+/*
+- Function: is_collapsed
+- ----------------------------
+-  Checks if the entire field has been fully collapsed (all cells have entropy <= 1).
+-
+-  field: The field to check.
+-
+-  Returns: 1 if fully collapsed, 0 otherwise.
+ */
 short is_collapsed(field_t *field)
 {
     for (int i = 0; i < field->height; ++i)
@@ -336,6 +420,17 @@ short is_collapsed(field_t *field)
     return 1;
 }
 
+/*
+- Function: collapse_random_cell
+- ----------------------------
+-  Picks a random cell with minimum entropy, collapses it to a single class, and propagates.
+-
+-  field: The field containing the cell to collapse.
+-  debug: A flag indicating if debug information should be printed.
+-  displayer: An array of strings used for debug printing.
+-
+-  Returns: void
+ */
 void collapse_random_cell(field_t *field, short debug, char *displayer[field->tt_nb_of_classes])
 {
     cell_t *cell_to_collapse = get_random_min_entropy_cell(field);

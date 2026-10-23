@@ -14,26 +14,37 @@
  */
 typedef unsigned long long class_t;
 
-/**
- * Takes an id (= a unique number between 0 and 63) to create a class_t
- * variable.
- * @param id The UNIQUE id of the class.
- * @return The class_t variable corresponding to the id.
+/*
+- Function: get_class
+- ----------------------------
+-  Takes an id (= a unique number between 0 and 63) to create a class_t variable.
+-
+-  id: The UNIQUE id of the class.
+-
+-  Returns: The class_t variable corresponding to the id.
+-  Error: Fails if id > 64.
  */
 class_t get_class(unsigned short id);
 
-/**
- * Returns the id of the class.
- * @param class The class_t you want the id of.
- * @return The id of the class.
+/*
+- Function: get_id_of_class
+- ----------------------------
+-  Returns the id of the class.
+-
+-  class: The class_t you want the id of.
+-
+-  Returns: The id of the class.
  */
 int get_id_of_class(class_t class);
 
-/**
- * Returns the class_t corresponding to all classes together ( CLASS_1 | CLASS_2
- * | ... | CLASS_tt_nb_of_classes ).
- * @param tt_nb_of_classes The number of classes you have.
- * @return CLASS_1 | CLASS_2 | ... | CLASS_tt_nb_of_classes.
+/*
+- Function: get_any_class
+- ----------------------------
+-  Returns the class_t corresponding to all classes together ( CLASS_1 | CLASS_2 | ... | CLASS_tt_nb_of_classes ).
+-
+-  tt_nb_of_classes: The number of classes you have.
+-
+-  Returns: CLASS_1 | CLASS_2 | ... | CLASS_tt_nb_of_classes.
  */
 class_t get_any_class(unsigned short tt_nb_of_classes);
 
@@ -51,12 +62,16 @@ typedef class_t rule_t[8];
  */
 typedef rule_t rule_set_t[64];
 
-/**
- * As the name suggest, this function add a given rule_t to a rule_set_t for a
- * given class_t
- * @param rule_set
- * @param class
- * @param rule
+/*
+- Function: add_rule_to_rule_set
+- ----------------------------
+-  As the name suggest, this function add a given rule_t to a rule_set_t for a given class_t.
+-
+-  rule_set: The rule set to which the rule is added.
+-  class: The class for which the rule applies.
+-  rule: The rule to add.
+-
+-  Returns: void
  */
 void add_rule_to_rule_set(rule_set_t rule_set, class_t class, const rule_t rule);
 
@@ -139,27 +154,41 @@ typedef struct field
     rule_set_t *rule_set;
 } field_t;
 
-/**
- * Create and initialize a field_t.
- * @param rule_set The rules that the field_t will use.
- * @param width The width of the grid_t.
- * @param height The height of the grid_t
- * @param tt_nb_of_classes The number of classes the grid_t will hold.
- * @return The initialized field_t.
+/*
+- Function: init_field
+- ----------------------------
+-  Create and initialize a field_t.
+-
+-  rule_set: The rules that the field_t will use.
+-  width: The width of the grid_t.
+-  height: The height of the grid_t.
+-  tt_nb_of_classes: The number of classes the grid_t will hold.
+-
+-  Returns: The initialized field_t.
+-  Error: Fails if memory allocation for the field or grid fails.
  */
 field_t *init_field(rule_set_t *rule_set, int width, int height, short tt_nb_of_classes);
 
-/**
- * Print the field_t to the terminal.
- * @param field The field to print
- * @param displayer An array of string, the array must have the size of @code
- * field->width\endcode.
+/*
+- Function: print_field
+- ----------------------------
+-  Print the field_t to the terminal.
+-
+-  field: The field to print.
+-  displayer: An array of string, the array must have the size of @code field->width\endcode.
+-
+-  Returns: void
  */
 void print_field(field_t *field, char *displayer[field->width]);
 
-/**
- * Free the field_t from the memory.
- * @param field the field to free.
+/*
+- Function: free_field
+- ----------------------------
+-  Free the field_t from the memory.
+-
+-  field: The field to free.
+-
+-  Returns: void
  */
 void free_field(field_t *field);
 
@@ -167,27 +196,31 @@ void free_field(field_t *field);
 //                                    WFC Algorithm
 // ###################################################################################
 
-/**
- * Collapse the field_t according to the @code field->rule_set\endcode.
- * @warning Uses the default @code rand()\endcode function so running two times
- * the same code will give the same result.
- * @param field The field to collapse.
- * @warning if any cell contain a class of 0, that means that during collapsing,
- * this cell encountered a situation where no class could be placed.
+/*
+- Function: collapse
+- ----------------------------
+-  Collapse the field_t according to the @code field->rule_set\endcode.
+-  @warning Uses the default @code rand()\endcode function so running two times the same code will give the same result.
+-  @warning if any cell contain a class of 0, that means that during collapsing, this cell encountered a situation where no class could be placed.
+-
+-  field: The field to collapse.
+-
+-  Returns: void
  */
 void collapse(field_t *field);
 
-/**
- * Collapse the field_t according to the @code field->rule_set\endcode. and
- * print each step.
- * @warning Uses the default @code rand()\endcode function so running two times
- * the same code will give the same result.
- * @param field The field to collapse.
- * @param displayer An array of string representing how the field should be
- * printed
- * @param steps The number of collapse step to perform ( < 0 => all)
- * @warning if any cell contain a class of 0, that means that during collapsing,
- * this cell encountered a situation where no class could be placed.
+/*
+- Function: debug_collapse
+- ----------------------------
+-  Collapse the field_t according to the @code field->rule_set\endcode and print each step.
+-  @warning Uses the default @code rand()\endcode function so running two times the same code will give the same result.
+-  @warning if any cell contain a class of 0, that means that during collapsing, this cell encountered a situation where no class could be placed.
+-
+-  field: The field to collapse.
+-  displayer: An array of string representing how the field should be printed.
+-  steps: The number of collapse step to perform ( < 0 => all).
+-
+-  Returns: void
  */
 void debug_collapse(field_t *field, char *displayer[field->tt_nb_of_classes], int steps);
 
